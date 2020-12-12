@@ -1,4 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { IsEmail } from 'class-validator';
+import * as moment from 'moment';
 
 @Entity()
 export class User {
@@ -6,8 +9,10 @@ export class User {
   id: number;
 
   @Column({ length: 100 })
+  @IsEmail()
   email: string;
 
+  @Exclude()
   @Column({ length: 255 })
   password: string;
 
@@ -15,7 +20,7 @@ export class User {
   firstName: string;
 
   @Column({ name: 'last_name', length: 100 })
-  lastname: string;
+  lastName: string;
 
   @Column({ length: 45 })
   phone: string;
@@ -24,8 +29,15 @@ export class User {
   registerWith: string;
 
   @Column({ name: 'email_verified_at' })
-  emailVerifiedAt: Timestamp;
+  emailVerifiedAt: string;
 
-  @Column({ name: 'updated_at' })
-  updatedAt: Timestamp;
+  @Column({
+    name: 'updated_at',
+    default: moment().format('YYYY-MM-DD HH:mm:ss'),
+  })
+  updatedAt: string;
+
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
+  }
 }
