@@ -3,6 +3,7 @@ import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
 import * as moment from 'moment';
 import { ApiProperty } from '@nestjs/swagger';
+import { RegisterWith } from '../dto/register-with.dto';
 
 @Entity()
 export class User {
@@ -36,10 +37,10 @@ export class User {
 
   @ApiProperty({
     example: 'email',
-    description: "It can be 'email', 'gmail' and 'facebook'",
+    description: "It can be 'email', 'google' or 'facebook'",
   })
   @Column({ name: 'register_with', length: 45 })
-  registerWith: string;
+  registerWith: RegisterWith;
 
   @ApiProperty({
     example: '',
