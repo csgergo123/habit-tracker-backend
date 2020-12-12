@@ -9,14 +9,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private readonly usersRepository: Repository<User>,
   ) {}
 
   create(createUserDto: CreateUserDto) {
-    return this.usersRepository.create(createUserDto);
+    const user = new User({ ...createUserDto });
+
+    return this.usersRepository.save(user);
   }
 
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
@@ -25,10 +27,10 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update(id, updateUserDto);
+    return this.usersRepository.update(id, { ...updateUserDto });
   }
 
-  remove(id: number) {
-    //return this.usersRepository.remove();
+  async remove(id: number): Promise<void> {
+    await this.usersRepository.delete(id);
   }
 }
