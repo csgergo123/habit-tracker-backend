@@ -9,7 +9,6 @@ async function bootstrap() {
     .setTitle('Habit tracker API')
     .setDescription('Habit tracker API description')
     .setVersion('0.1')
-    .addTag('habit_tracker')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
