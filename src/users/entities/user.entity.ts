@@ -11,24 +11,21 @@ export class User {
   @Column({ length: 255 })
   password: string;
 
-  @Column({ length: 100 })
-  @Column('first_name')
+  @Column({ name: 'first_name', length: 100 })
   firstName: string;
 
-  @Column({ length: 100 })
-  @Column('last_name')
+  @Column({ name: 'last_name', length: 100 })
   lastname: string;
 
   @Column({ length: 45 })
   phone: string;
 
-  @Column({ length: 45 })
-  @Column('register_with')
+  @Column({ name: 'register_with', length: 45 })
   registerWith: string;
 
-  @Column('email_verified_at')
+  @Column({ name: 'email_verified_at' })
   emailVerifiedAt: Timestamp;
 
-  @Column('updated_at')
+  @Column({ name: 'updated_at' })
   updatedAt: Timestamp;
 }
