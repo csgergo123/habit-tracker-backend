@@ -8,9 +8,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { HealthController } from './health/health.controller';
+import { HabitModule } from './habit/habit.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, TerminusModule],
+  imports: [TypeOrmModule.forRoot(), UsersModule, TerminusModule, HabitModule],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })
