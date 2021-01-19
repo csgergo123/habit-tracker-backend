@@ -28,6 +28,7 @@ export class Habit {
     example: 'daily',
     description:
       "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
+    enum: Regularity,
   })
   @Column({ length: 50 })
   regularity: Regularity;
@@ -35,6 +36,7 @@ export class Habit {
   @ApiProperty({
     example: 'normal',
     description: 'The difficulty of the habit.',
+    enum: Intensity,
   })
   @Column({ length: 45 })
   intensity: Intensity;

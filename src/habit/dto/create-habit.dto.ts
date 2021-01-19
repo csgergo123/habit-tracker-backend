@@ -1,30 +1,50 @@
 import * as moment from 'moment';
 
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty } from 'class-validator';
 import { Intensity } from './intensity.dto';
 import { Regularity } from './regularity.dto';
 
 export class CreateHabitDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 1,
+    description: 'The ID of the user.',
+  })
   @IsNotEmpty()
   readonly userId: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Do the homework',
+    description: 'The title of the habit.',
+  })
   @IsNotEmpty()
   readonly title: string;
 
-  @ApiProperty({ enum: Regularity, default: 'daily' })
+  @ApiProperty({
+    enum: Regularity,
+    default: 'daily',
+    description:
+      "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
+  })
   @IsNotEmpty()
+  @IsEnum(Regularity)
   readonly regularity: Regularity;
 
-  @ApiProperty({ enum: Intensity, default: 'normal' })
+  @ApiProperty({
+    default: 'normal',
+    description: 'The difficulty of the habit.',
+    enum: Intensity,
+  }
   @IsNotEmpty()
+  @IsEnum(Intensity)
   readonly intensity: Intensity;
 
-  @ApiProperty({ default: 'lightblue' })
+  @ApiPropertyOptional({
+    default: 'lightblue',
+    description: 'The color of the habit in the frontend.',
+  })
   readonly color?: string;
 
-  @ApiProperty({ default: moment().format('YYYY-MM-DD HH:mm:ss') })
+  @ApiPropertyOptional({ default: moment().format('YYYY-MM-DD HH:mm:ss'), description: 'The datetime when the habit was created.'})
   readonly dateAdded?: string;
 }
