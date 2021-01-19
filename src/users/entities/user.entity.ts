@@ -43,7 +43,6 @@ export class User {
   registerWith: RegisterWith;
 
   @ApiProperty({
-    example: '',
     description: 'The datetime when the user verified the registration',
   })
   @Column({ name: 'email_verified_at' })
