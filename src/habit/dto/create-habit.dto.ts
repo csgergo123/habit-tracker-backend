@@ -34,7 +34,7 @@ export class CreateHabitDto {
     default: 'normal',
     description: 'The difficulty of the habit.',
     enum: Intensity,
-  }
+  })
   @IsNotEmpty()
   @IsEnum(Intensity)
   readonly intensity: Intensity;
@@ -45,6 +45,9 @@ export class CreateHabitDto {
   })
   readonly color?: string;
 
-  @ApiPropertyOptional({ default: moment().format('YYYY-MM-DD HH:mm:ss'), description: 'The datetime when the habit was created.'})
+  @ApiPropertyOptional({
+    default: moment().format('YYYY-MM-DD HH:mm:ss'),
+    description: 'The datetime when the habit was created.',
+  })
   readonly dateAdded?: string;
 }
