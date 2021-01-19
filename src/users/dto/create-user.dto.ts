@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 import { RegisterWith } from './register-with.dto';
 export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
+  @IsEmail()
   readonly email: string;
 
   @ApiProperty()
