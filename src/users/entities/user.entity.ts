@@ -1,9 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
 import * as moment from 'moment';
 import { ApiProperty } from '@nestjs/swagger';
 import { RegisterWith } from '../dto/register-with.dto';
+import { Habit } from 'src/habit/entities/Habit';
 
 @Entity()
 export class User {
@@ -53,6 +61,9 @@ export class User {
     default: moment().format('YYYY-MM-DD HH:mm:ss'),
   })
   updatedAt: string;
+
+  @OneToMany(() => Habit, (habit) => habit.user)
+  habits: Habit[];
 
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
