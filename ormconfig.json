@@ -5,9 +5,7 @@
   "username": "root",
   "password": "Asd123",
   "database": "habit_tracker",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "entities": ["dist/**/*{.ts,.js}"],
   "synchronize": false,
-  "migrations": [
-    "src/migration/**/*.ts"
-  ]
+  "migrations": ["src/migration/**/*.ts"]
 }
