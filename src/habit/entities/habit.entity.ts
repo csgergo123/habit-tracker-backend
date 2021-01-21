@@ -1,9 +1,16 @@
 import * as moment from 'moment';
 
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Intensity } from '../dto/intensity.dto';
 import { Regularity } from '../dto/regularity.dto';
+import { User } from 'src/users/entities/User';
 
 @Entity()
 export class Habit {
@@ -14,8 +21,9 @@ export class Habit {
     example: 1,
     description: 'The ID of the user.',
   })
-  @Column({ name: 'user_id' })
-  userId: number;
+  @ManyToOne(() => User, (user) => user.habits)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @ApiProperty({
     example: 'Do the homework',
@@ -30,7 +38,7 @@ export class Habit {
       "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
     enum: Regularity,
   })
-  @Column({ length: 50 })
+  @Column({ length: 50, default: 'lightblue' })
   regularity: Regularity;
 
   @ApiProperty({

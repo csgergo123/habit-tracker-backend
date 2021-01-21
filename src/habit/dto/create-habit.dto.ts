@@ -27,8 +27,7 @@ export class CreateHabitDto {
       "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
   })
   @IsNotEmpty()
-  @IsEnum(Regularity)
-  readonly regularity: Regularity;
+  readonly regularity: string;
 
   @ApiProperty({
     default: 'normal',
@@ -39,15 +38,15 @@ export class CreateHabitDto {
   @IsEnum(Intensity)
   readonly intensity: Intensity;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     default: 'lightblue',
     description: 'The color of the habit in the frontend.',
   })
-  readonly color?: string;
+  readonly color: string | null;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     default: moment().format('YYYY-MM-DD HH:mm:ss'),
     description: 'The datetime when the habit was created.',
   })
-  readonly dateAdded?: string;
+  readonly dateAdded: Date | null;
 }
