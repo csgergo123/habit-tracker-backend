@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Habit } from './entities/Habit';
@@ -26,15 +26,21 @@ export class HabitService {
     return this.habitRepository.find();
   }
 
-  findOne(id: number): Promise<Habit> {
-    return this.habitRepository.findOne(id);
+  async findOne(id: number): Promise<Habit> {
+    const found = await this.habitRepository.findOne(id);
+    if (!found) {
+      throw new NotFoundException;
+    }
+    return found;
   }
 
-  update(id: number, updateHabitDto: UpdateHabitDto) {
+  async update(id: number, updateHabitDto: UpdateHabitDto) {
+    const habit = await this.findOne(id);
     return this.habitRepository.update(id, { ...updateHabitDto });
   }
 
   async remove(id: number): Promise<void> {
+    const habit = await this.findOne(id);
     await this.habitRepository.delete(id);
   }
 }
