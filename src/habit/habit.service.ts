@@ -29,7 +29,7 @@ export class HabitService {
   async findOne(id: number): Promise<Habit> {
     const found = await this.habitRepository.findOne(id);
     if (!found) {
-      throw new NotFoundException;
+      throw new NotFoundException();
     }
     return found;
   }
