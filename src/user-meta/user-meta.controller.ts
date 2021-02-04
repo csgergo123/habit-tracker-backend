@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UserMetaService } from './user-meta.service';
 import { CreateUserMetaDto } from './dto/create-user-meta.dto';
@@ -28,20 +29,20 @@ export class UserMetaController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.userMetaService.findOne(+id);
   }
 
   @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: string,
     @Body() updateUserMetaDto: UpdateUserMetaDto,
   ) {
     return this.userMetaService.update(+id, updateUserMetaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.userMetaService.remove(+id);
   }
 }
