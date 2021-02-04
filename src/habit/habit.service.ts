@@ -40,7 +40,9 @@ export class HabitService {
   }
 
   async remove(id: number): Promise<void> {
-    const habit = await this.findOne(id);
-    await this.habitRepository.delete(id);
+    const result = await this.habitRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`The habit with ID ${id} not found.`);
+    }
   }
 }
