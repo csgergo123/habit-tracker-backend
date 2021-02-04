@@ -10,7 +10,7 @@ import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
 import * as moment from 'moment';
 import { ApiProperty } from '@nestjs/swagger';
-import { RegisterWith } from '../dto/register-with.dto';
+import { RegisterWith } from './register-with.enum';
 import { Habit } from 'src/habit/entities/Habit';
 
 @Entity()

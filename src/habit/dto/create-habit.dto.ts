@@ -2,8 +2,8 @@ import * as moment from 'moment';
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty } from 'class-validator';
-import { Intensity } from './intensity.dto';
-import { Regularity } from './regularity.dto';
+import { Intensity } from '../entities/intensity.enum';
+import { Regularity } from '../entities/regularity.enum';
 
 export class CreateHabitDto {
   @ApiProperty({
@@ -42,7 +42,7 @@ export class CreateHabitDto {
     default: 'lightblue',
     description: 'The color of the habit in the frontend.',
   })
-  readonly color: string | null;
+  readonly color: string | null; // TODO miért nem látja a megadott értéket?
 
   @ApiProperty({
     default: moment().format('YYYY-MM-DD HH:mm:ss'),

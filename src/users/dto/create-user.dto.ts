@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsEnum } from 'class-validator';
-import { RegisterWith } from './register-with.dto';
+import { RegisterWith } from '../entities/register-with.enum';
 export class CreateUserDto {
   @ApiProperty({ example: 'test@test.com', description: 'The email address' })
   @IsNotEmpty()

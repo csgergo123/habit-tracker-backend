@@ -12,7 +12,7 @@ import { User } from '../../users/entities/User';
 import { HabitDone } from '../../habit-done/entities/HabitDone';
 import { ApiProperty } from '@nestjs/swagger';
 import * as moment from 'moment';
-import { Intensity } from '../dto/intensity.dto';
+import { Intensity } from './intensity.enum';
 
 @Index('fk_Habit_User1_idx', ['userId'], {})
 @Entity('habit', { schema: 'habit_tracker' })

@@ -8,8 +8,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Intensity } from '../dto/intensity.dto';
-import { Regularity } from '../dto/regularity.dto';
+import { Intensity } from './intensity.enum';
+import { Regularity } from './regularity.enum';
 import { User } from 'src/users/entities/User';
 
 @Entity()
