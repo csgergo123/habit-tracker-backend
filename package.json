@@ -28,6 +28,7 @@
     "@nestjs/swagger": "^4.7.5",
     "@nestjs/terminus": "^7.0.1",
     "@nestjs/typeorm": "^7.1.5",
+    "bcrypt": "^5.0.0",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
