@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
@@ -16,6 +17,7 @@ import { Todo } from '../../todo/entities/Todo';
 import { UserMeta } from '../../user-meta/entities/UserMeta';
 
 @Entity('user', { schema: 'habit_tracker' })
+@Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
