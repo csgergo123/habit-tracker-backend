@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Habit } from './entities/habit.entity';
+import { Habit } from './entities/Habit';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 
@@ -13,6 +13,10 @@ export class HabitService {
   ) {}
 
   create(createHabitDto: CreateHabitDto) {
+    console.log(
+      '🚀 ~ file: habit.service.ts ~ line 16 ~ HabitService ~ create ~ createHabitDto',
+      createHabitDto,
+    );
     const habit = new Habit({ ...createHabitDto });
 
     return this.habitRepository.save(habit);
@@ -22,15 +26,23 @@ export class HabitService {
     return this.habitRepository.find();
   }
 
-  findOne(id: number): Promise<Habit> {
-    return this.habitRepository.findOne(id);
+  async findOne(id: number): Promise<Habit> {
+    const found = await this.habitRepository.findOne(id);
+    if (!found) {
+      throw new NotFoundException();
+    }
+    return found;
   }
 
-  update(id: number, updateHabitDto: UpdateHabitDto) {
+  async update(id: number, updateHabitDto: UpdateHabitDto) {
+    const habit = await this.findOne(id);
     return this.habitRepository.update(id, { ...updateHabitDto });
   }
 
   async remove(id: number): Promise<void> {
-    await this.habitRepository.delete(id);
+    const result = await this.habitRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`The habit with ID ${id} not found.`);
+    }
   }
 }

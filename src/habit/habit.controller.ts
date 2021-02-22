@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { HabitService } from './habit.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
@@ -28,17 +29,20 @@ export class HabitController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.habitService.findOne(+id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateHabitDto: UpdateHabitDto) {
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updateHabitDto: UpdateHabitDto,
+  ) {
     return this.habitService.update(+id, updateHabitDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.habitService.remove(+id);
   }
 }

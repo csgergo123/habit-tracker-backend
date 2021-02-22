@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsEnum } from 'class-validator';
-import { RegisterWith } from './register-with.dto';
+import { RegisterWith } from '../entities/register-with.enum';
 export class CreateUserDto {
   @ApiProperty({ example: 'test@test.com', description: 'The email address' })
   @IsNotEmpty()
@@ -19,13 +19,13 @@ export class CreateUserDto {
     example: 'Doe',
     description: 'The last name of the user',
   })
-  readonly lastName?: string;
+  readonly lastName: string | null;
 
   @ApiPropertyOptional({
     example: '+361251215',
     description: 'The phone number of the user',
   })
-  readonly phone?: string;
+  readonly phone: string | null;
 
   @ApiProperty({ enum: RegisterWith, default: 'email' })
   @IsNotEmpty()
@@ -35,5 +35,5 @@ export class CreateUserDto {
   @ApiPropertyOptional({
     description: 'The datetime when the user verified the registration',
   })
-  readonly emailVerifiedAt?: string;
+  readonly emailVerifiedAt: Date | null;
 }
