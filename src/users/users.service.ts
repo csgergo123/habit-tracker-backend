@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/User';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,10 +17,20 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const user = new User({ ...createUserDto });
 
-    return this.usersRepository.save(user);
+    let savedUser: User;
+    try {
+      savedUser = await this.usersRepository.save(user);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('This email already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+    return savedUser;
   }
 
   async findAll(): Promise<User[]> {
@@ -33,4 +48,6 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.usersRepository.delete(id);
   }
+
+  async signIn(authCredentialsDto: AuthCredentialsDto) {}
 }
