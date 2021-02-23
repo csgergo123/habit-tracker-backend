@@ -24,7 +24,7 @@ export class CreateUserDto {
     message:
       'Password is too weak. Use mimimum 1 lettercase, 1 lowercase and 1 number.',
   })
-  readonly password: string;
+  password: string;
 
   @ApiProperty({ example: 'John', description: 'The first name of the user' })
   @IsNotEmpty()

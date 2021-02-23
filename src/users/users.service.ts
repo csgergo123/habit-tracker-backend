@@ -10,6 +10,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -18,7 +20,15 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const salt = await bcrypt.genSalt();
+
+    createUserDto.password = await this.hashPassword(
+      createUserDto.password,
+      salt,
+    );
+
     const user = new User({ ...createUserDto });
+    user.salt = salt;
 
     let savedUser: User;
     try {
@@ -31,6 +41,10 @@ export class UsersService {
       }
     }
     return savedUser;
+  }
+
+  async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
   }
 
   async findAll(): Promise<User[]> {
