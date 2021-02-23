@@ -24,13 +24,15 @@ export class UsersController {
   @ApiOperation({ summary: 'Regist user' })
   @ApiResponse({ status: 201, description: 'The user record.' })
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.signUp(createUserDto);
   }
 
   @Post('/signIn')
   @ApiOperation({ summary: 'Login user' })
   @ApiResponse({ status: 201 })
-  signIn(@Body() authCredentialsDto: AuthCredentialsDto) {
+  signIn(
+    @Body() authCredentialsDto: AuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
     return this.usersService.signIn(authCredentialsDto);
   }
 
