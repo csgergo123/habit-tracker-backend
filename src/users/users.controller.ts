@@ -17,7 +17,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('/signUp')
   @ApiOperation({ summary: 'Create user' })
   @ApiResponse({ status: 201, description: 'The user record.' })
   create(@Body() createUserDto: CreateUserDto) {
