@@ -67,6 +67,12 @@ export class User extends BaseEntity {
   })
   updatedAt: Date | null;
 
+  @ApiProperty({
+    description: 'The salt for the password.',
+  })
+  @Column({ length: 100 })
+  salt: string;
+
   @OneToMany(() => Habit, (habit) => habit.user)
   habits: Habit[];
 
