@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -18,6 +19,10 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
+
+  async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
+  }
 
   async create(createUserDto: CreateUserDto) {
     const salt = await bcrypt.genSalt();
@@ -43,8 +48,24 @@ export class UsersService {
     return savedUser;
   }
 
-  async hashPassword(password: string, salt: string): Promise<string> {
-    return bcrypt.hash(password, salt);
+  async validateUserPassword(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<string> {
+    const { email, password } = authCredentialsDto;
+    const user = await this.usersRepository.findOne({ email });
+
+    if (user && (await user.validatePassword(password))) {
+      return user.email;
+    }
+    return null;
+  }
+
+  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    const email = await this.validateUserPassword(authCredentialsDto);
+
+    if (!email) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
   }
 
   async findAll(): Promise<User[]> {
@@ -62,6 +83,4 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.usersRepository.delete(id);
   }
-
-  async signIn(authCredentialsDto: AuthCredentialsDto) {}
 }

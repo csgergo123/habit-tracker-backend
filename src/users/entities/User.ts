@@ -10,6 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
 import * as moment from 'moment';
+import * as bcrypt from 'bcrypt';
 
 import { Habit } from '../../habit/entities/Habit';
 import { HabitDone } from '../../habit-done/entities/HabitDone';
@@ -88,5 +89,10 @@ export class User extends BaseEntity {
   constructor(init?: Partial<User>) {
     super();
     Object.assign(this, init);
+  }
+
+  async validatePassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.password;
   }
 }
