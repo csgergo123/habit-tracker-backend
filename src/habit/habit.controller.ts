@@ -29,25 +29,26 @@ export class HabitController {
   }
 
   @Get()
-  findAll() {
-    return this.habitService.findAll();
+  findAll(@GetUser() user: User) {
+    return this.habitService.findAll(user);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: string) {
-    return this.habitService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: string, @GetUser() user: User) {
+    return this.habitService.findOne(user, +id);
   }
 
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: string,
     @Body() updateHabitDto: UpdateHabitDto,
+    @GetUser() user: User,
   ) {
-    return this.habitService.update(+id, updateHabitDto);
+    return this.habitService.update(user, updateHabitDto, +id);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: string) {
-    return this.habitService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: string, @GetUser() user: User) {
+    return this.habitService.remove(user, +id);
   }
 }

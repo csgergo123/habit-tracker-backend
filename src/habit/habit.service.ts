@@ -24,25 +24,25 @@ export class HabitService {
     return savedHabit;
   }
 
-  async findAll(): Promise<Habit[]> {
-    return this.habitRepository.find();
+  async findAll(user: User): Promise<Habit[]> {
+    return this.habitRepository.find({ where: { user } });
   }
 
-  async findOne(id: number): Promise<Habit> {
-    const found = await this.habitRepository.findOne(id);
+  async findOne(user: User, id: number): Promise<Habit> {
+    const found = await this.habitRepository.findOne({ where: { id, user } });
     if (!found) {
       throw new NotFoundException();
     }
     return found;
   }
 
-  async update(id: number, updateHabitDto: UpdateHabitDto) {
-    const habit = await this.findOne(id);
+  async update(user: User, updateHabitDto: UpdateHabitDto, id: number) {
+    const habit = await this.findOne(user, id);
     return this.habitRepository.update(id, { ...updateHabitDto });
   }
 
-  async remove(id: number): Promise<void> {
-    const result = await this.habitRepository.delete(id);
+  async remove(user: User, id: number): Promise<void> {
+    const result = await this.habitRepository.delete({ id, user }); // TODO
     if (result.affected === 0) {
       throw new NotFoundException(`The habit with ID ${id} not found.`);
     }
