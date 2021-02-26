@@ -44,7 +44,7 @@ export class Habit extends BaseEntity {
     enum: Intensity,
   })
   @Column('enum', { name: 'intensity', enum: Intensity })
-  intensity: 'weak' | 'normal' | 'strong';
+  intensity: Intensity;
 
   @ApiProperty({
     example: 'lightblue',
