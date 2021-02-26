@@ -8,20 +8,32 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  @ApiOperation({ summary: 'Create user' })
+  @Post('/signUp')
+  @ApiOperation({ summary: 'Regist user' })
   @ApiResponse({ status: 201, description: 'The user record.' })
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.signUp(createUserDto);
+  }
+
+  @Post('/signIn')
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: 201 })
+  signIn(
+    @Body() authCredentialsDto: AuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    return this.usersService.signIn(authCredentialsDto);
   }
 
   @Get()

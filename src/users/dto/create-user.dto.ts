@@ -1,5 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsEnum } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsNotEmpty,
+  IsEnum,
+  MinLength,
+  MaxLength,
+  Matches,
+} from 'class-validator';
 import { RegisterWith } from '../entities/register-with.enum';
 export class CreateUserDto {
   @ApiProperty({ example: 'test@test.com', description: 'The email address' })
@@ -9,7 +17,14 @@ export class CreateUserDto {
 
   @ApiProperty({ example: 'Asd123', description: 'Cleartext password' })
   @IsNotEmpty()
-  readonly password: string;
+  @IsString()
+  @MinLength(6)
+  @MaxLength(60)
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message:
+      'Password is too weak. Use mimimum 1 lettercase, 1 lowercase and 1 number.',
+  })
+  password: string;
 
   @ApiProperty({ example: 'John', description: 'The first name of the user' })
   @IsNotEmpty()

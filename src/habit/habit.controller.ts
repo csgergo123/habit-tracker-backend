@@ -7,14 +7,17 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { HabitService } from './habit.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Habits')
 @Controller('habits')
+@UseGuards(AuthGuard())
 export class HabitController {
   constructor(private readonly habitService: HabitService) {}
 
