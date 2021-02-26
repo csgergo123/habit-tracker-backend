@@ -1,0 +1,10 @@
+server:
+  port: 8000
+
+db:
+  type: 'mysql'
+  port: 3306
+  database: 'habit_tracker'
+
+jwt:
+  expiresIn: 3600

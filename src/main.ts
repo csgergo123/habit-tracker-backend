@@ -1,9 +1,15 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as config from 'config';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const serverConfig = config.get('server');
+
+  const logger = new Logger('bootstrap');
+
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,6 +25,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(8000);
+  const port = process.env.PORT || serverConfig.port;
+
+  await app.listen(port);
+
+  logger.log(`Application listening on ${port}`);
 }
 bootstrap();

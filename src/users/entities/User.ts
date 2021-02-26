@@ -74,7 +74,7 @@ export class User extends BaseEntity {
   @Column({ length: 100 })
   salt: string;
 
-  @OneToMany(() => Habit, (habit) => habit.user)
+  @OneToMany(() => Habit, (habit) => habit.user, { eager: true })
   habits: Habit[];
 
   @OneToMany(() => HabitDone, (habitDone) => habitDone.user)

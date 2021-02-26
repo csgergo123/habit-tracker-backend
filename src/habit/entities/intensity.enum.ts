@@ -1,5 +1,5 @@
 export enum Intensity {
-  weak = 'strong',
+  weak = 'weak',
   normal = 'normal',
   strong = 'strong',
 }
