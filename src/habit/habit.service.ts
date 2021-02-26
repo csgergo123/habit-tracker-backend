@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Habit } from './entities/Habit';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
+import { User } from 'src/users/entities/User';
 
 @Injectable()
 export class HabitService {
@@ -12,14 +13,15 @@ export class HabitService {
     private readonly habitRepository: Repository<Habit>,
   ) {}
 
-  create(createHabitDto: CreateHabitDto) {
-    console.log(
-      '🚀 ~ file: habit.service.ts ~ line 16 ~ HabitService ~ create ~ createHabitDto',
-      createHabitDto,
-    );
-    const habit = new Habit({ ...createHabitDto });
+  async create(createHabitDto: CreateHabitDto, user: User) {
+    const habit = new Habit({ ...createHabitDto, user });
 
-    return this.habitRepository.save(habit);
+    const savedHabit = await this.habitRepository.save(habit);
+
+    // Remove the user object from response
+    delete savedHabit.user;
+
+    return savedHabit;
   }
 
   async findAll(): Promise<Habit[]> {
