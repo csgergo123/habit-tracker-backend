@@ -7,16 +7,14 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UseGuards,
-  Req,
 } from '@nestjs/common';
+
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { request } from 'http';
-import { AuthGuard } from '@nestjs/passport';
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -67,11 +65,5 @@ export class UsersController {
   @ApiResponse({ status: 201, description: 'Remove user.' })
   remove(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.remove(+id);
-  }
-
-  @Post('/test')
-  @UseGuards(AuthGuard())
-  test(@Req() req) {
-    console.log('req', req);
   }
 }
