@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Habit } from './entities/Habit';
@@ -8,6 +13,8 @@ import { User } from 'src/users/entities/User';
 
 @Injectable()
 export class HabitService {
+  private logger = new Logger('HabitService');
+
   constructor(
     @InjectRepository(Habit)
     private readonly habitRepository: Repository<Habit>,
@@ -16,12 +23,22 @@ export class HabitService {
   async create(createHabitDto: CreateHabitDto, user: User) {
     const habit = new Habit({ ...createHabitDto, user });
 
-    const savedHabit = await this.habitRepository.save(habit);
+    try {
+      const savedHabit = await this.habitRepository.save(habit);
 
-    // Remove the user object from response
-    delete savedHabit.user;
+      // Remove the user object from response
+      delete savedHabit.user;
 
-    return savedHabit;
+      return savedHabit;
+    } catch (error) {
+      this.logger.error(
+        `Error during save habit to the database. Habit: ${JSON.stringify(
+          habit,
+        )}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException();
+    }
   }
 
   async findAll(user: User): Promise<Habit[]> {

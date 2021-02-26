@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Logger,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -18,12 +19,15 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
+  private logger = new Logger('UserController');
+
   constructor(private readonly usersService: UsersService) {}
 
   @Post('/signUp')
   @ApiOperation({ summary: 'Regist user' })
   @ApiResponse({ status: 201, description: 'The user record.' })
   create(@Body() createUserDto: CreateUserDto) {
+    this.logger.verbose(`A new user created. ${JSON.stringify(createUserDto)}`);
     return this.usersService.signUp(createUserDto);
   }
 
