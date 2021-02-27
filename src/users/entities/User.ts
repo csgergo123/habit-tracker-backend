@@ -9,7 +9,6 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
-import * as moment from 'moment';
 import * as bcrypt from 'bcrypt';
 
 import { Habit } from '../../habit/entities/Habit';

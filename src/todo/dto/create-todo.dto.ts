@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsString, Min, Max } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, Min, Max } from 'class-validator';
 export class CreateTodoDto {
   @ApiProperty({
     example: 'First todo',
@@ -12,7 +12,7 @@ export class CreateTodoDto {
     default: 'lightblue',
     description: 'The color of the todo in the frontend.',
   })
-  @IsString()
+  @IsOptional()
   readonly color: string | null;
 
   @ApiPropertyOptional({
@@ -26,6 +26,6 @@ export class CreateTodoDto {
   @ApiPropertyOptional({
     description: 'The datetime when the todo was created.',
   })
-  @IsString()
+  @IsOptional()
   readonly dateAdded: Date | null;
 }

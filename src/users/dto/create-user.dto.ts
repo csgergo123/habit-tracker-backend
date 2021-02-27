@@ -4,6 +4,7 @@ import {
   IsString,
   IsNotEmpty,
   IsEnum,
+  IsOptional,
   MinLength,
   MaxLength,
   Matches,
@@ -34,12 +35,14 @@ export class CreateUserDto {
     example: 'Doe',
     description: 'The last name of the user',
   })
+  @IsOptional()
   readonly lastName: string | null;
 
   @ApiPropertyOptional({
     example: '+361251215',
     description: 'The phone number of the user',
   })
+  @IsOptional()
   readonly phone: string | null;
 
   @ApiProperty({ enum: RegisterWith, default: 'email' })
@@ -50,5 +53,6 @@ export class CreateUserDto {
   @ApiPropertyOptional({
     description: 'The datetime when the user verified the registration',
   })
+  @IsOptional()
   readonly emailVerifiedAt: Date | null;
 }
