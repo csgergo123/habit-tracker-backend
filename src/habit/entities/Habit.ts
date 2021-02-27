@@ -61,7 +61,7 @@ export class Habit extends BaseEntity {
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
 
-  @OneToMany(() => HabitDone, (habitDone) => habitDone.habit)
+  @OneToMany(() => HabitDone, (habitDone) => habitDone.habit, { eager: true })
   habitDones: HabitDone[];
 
   constructor(init?: Partial<Habit>) {
