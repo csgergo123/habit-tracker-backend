@@ -36,7 +36,7 @@ export class CreateHabitDto {
     description: 'The color of the habit in the frontend.',
   })
   @IsString()
-  readonly color: string | null; // TODO miért nem látja a megadott értéket?
+  readonly color: string | null;
 
   @ApiPropertyOptional({
     default: moment().format('YYYY-MM-DD HH:mm:ss'),

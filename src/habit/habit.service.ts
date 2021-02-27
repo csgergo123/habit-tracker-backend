@@ -25,10 +25,8 @@ export class HabitService {
 
     try {
       const savedHabit = await this.habitRepository.save(habit);
-
       // Remove the user object from response
       delete savedHabit.user;
-
       return savedHabit;
     } catch (error) {
       this.logger.error(
@@ -54,12 +52,17 @@ export class HabitService {
   }
 
   async update(user: User, updateHabitDto: UpdateHabitDto, id: number) {
-    const habit = await this.findOne(user, id);
-    return this.habitRepository.update(id, { ...updateHabitDto });
+    const result = await this.habitRepository.update(
+      { id, user },
+      { ...updateHabitDto },
+    );
+    if (result.affected === 0) {
+      throw new NotFoundException(`The habit with ID ${id} not found.`);
+    }
   }
 
   async remove(user: User, id: number): Promise<void> {
-    const result = await this.habitRepository.delete({ id, user }); // TODO
+    const result = await this.habitRepository.delete({ id, user });
     if (result.affected === 0) {
       throw new NotFoundException(`The habit with ID ${id} not found.`);
     }
