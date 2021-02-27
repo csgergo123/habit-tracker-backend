@@ -16,12 +16,17 @@ import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/users/get-user.decorator';
 import { User } from 'src/users/entities/User';
+import { CreateHabitDoneDto } from 'src/habit-done/dto/create-habit-done.dto';
+import { HabitDoneService } from 'src/habit-done/habit-done.service';
 
 @ApiTags('Habits')
 @Controller('habits')
 @UseGuards(AuthGuard())
 export class HabitController {
-  constructor(private readonly habitService: HabitService) {}
+  constructor(
+    private readonly habitService: HabitService,
+    private readonly habitDoneService: HabitDoneService,
+  ) {}
 
   @Post()
   create(@Body() createHabitDto: CreateHabitDto, @GetUser() user: User) {
@@ -50,5 +55,14 @@ export class HabitController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: string, @GetUser() user: User) {
     return this.habitService.remove(user, +id);
+  }
+
+  @Post(':id/done')
+  habitDone(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() createHabitDoneDto: CreateHabitDoneDto,
+    @GetUser() user: User,
+  ) {
+    return this.habitDoneService.makeDone(user, createHabitDoneDto, +id);
   }
 }

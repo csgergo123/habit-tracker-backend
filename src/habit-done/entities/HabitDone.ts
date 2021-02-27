@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BaseEntity,
   Column,
@@ -17,12 +18,15 @@ export class HabitDone extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @ApiProperty()
   @Column('int', { name: 'user_id' })
   userId: number;
 
+  @ApiProperty()
   @Column('int', { name: 'habit_id' })
   habitId: number;
 
+  @ApiProperty()
   @Column('datetime', { name: 'date' })
   date: Date;
 
