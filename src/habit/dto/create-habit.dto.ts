@@ -24,7 +24,9 @@ export class CreateHabitDto {
     enum: Intensity,
   })
   @IsNotEmpty()
-  @IsEnum(Intensity)
+  @IsEnum(Intensity, {
+    message: "Intensity can be 'weak', 'normal' or 'strong'.",
+  })
   readonly intensity: Intensity;
 
   @ApiPropertyOptional({
