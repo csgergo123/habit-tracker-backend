@@ -19,31 +19,29 @@ import { UserMeta } from '../../user-meta/entities/UserMeta';
 @Entity('user', { schema: 'habit_tracker' })
 @Unique(['email'])
 export class User extends BaseEntity {
+  @ApiProperty()
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @ApiProperty({ example: 'test@test.com', description: 'The email address' })
+  @ApiProperty()
   @IsEmail()
   @Column('varchar', { name: 'email', length: 100 })
   email: string;
 
-  @ApiProperty({ example: 'Asd123', description: 'Cleartext password' })
+  @ApiProperty()
   @Exclude()
   @Column('varchar', { name: 'password', length: 255 })
   password: string;
 
-  @ApiProperty({ example: 'John', description: 'The first name of the user' })
+  @ApiProperty()
   @Column('varchar', { name: 'first_name', length: 100 })
   firstName: string;
 
-  @ApiProperty({ example: 'Doe', description: 'The last name of the user' })
+  @ApiProperty()
   @Column('varchar', { name: 'last_name', nullable: true, length: 100 })
   lastName: string | null;
 
-  @ApiProperty({
-    example: '+361251215',
-    description: 'The phone number of the user',
-  })
+  @ApiProperty()
   @Column('varchar', { name: 'phone', nullable: true, length: 45 })
   phone: string | null;
 
@@ -54,9 +52,7 @@ export class User extends BaseEntity {
   @Column('varchar', { name: 'register_with', length: 45 })
   registerWith: string;
 
-  @ApiProperty({
-    description: 'The datetime when the user verified the registration',
-  })
+  @ApiProperty()
   @Column('datetime', { name: 'email_verified_at', nullable: true })
   emailVerifiedAt: Date | null;
 
@@ -67,9 +63,7 @@ export class User extends BaseEntity {
   })
   updatedAt: Date | null;
 
-  @ApiProperty({
-    description: 'The salt for the password.',
-  })
+  @ApiProperty()
   @Column({ length: 100 })
   salt: string;
 

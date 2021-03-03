@@ -27,7 +27,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Regist user' })
   @ApiResponse({ status: 201, description: 'The user record.' })
   create(@Body() createUserDto: CreateUserDto) {
-    this.logger.verbose(`A new user created. ${JSON.stringify(createUserDto)}`);
+    this.logger.log(`A new user created. ${JSON.stringify(createUserDto)}`);
     return this.usersService.signUp(createUserDto);
   }
 

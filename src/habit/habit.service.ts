@@ -10,8 +10,6 @@ import { Habit } from './entities/Habit';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { User } from 'src/users/entities/User';
-import { CreateHabitDoneDto } from 'src/habit-done/dto/create-habit-done.dto';
-import { HabitDone } from 'src/habit-done/entities/HabitDone';
 
 @Injectable()
 export class HabitService {

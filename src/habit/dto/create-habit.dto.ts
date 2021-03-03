@@ -6,10 +6,7 @@ import { Intensity } from '../entities/intensity.enum';
 import { Regularity } from '../entities/regularity.enum';
 
 export class CreateHabitDto {
-  @ApiProperty({
-    example: 'Do the homework',
-    description: 'The title of the habit.',
-  })
+  @ApiProperty()
   @IsNotEmpty()
   readonly title: string;
 
@@ -24,7 +21,6 @@ export class CreateHabitDto {
 
   @ApiProperty({
     default: 'normal',
-    description: 'The difficulty of the habit.',
     enum: Intensity,
   })
   @IsNotEmpty()
@@ -40,7 +36,6 @@ export class CreateHabitDto {
 
   @ApiPropertyOptional({
     default: moment().format('YYYY-MM-DD HH:mm:ss'),
-    description: 'The datetime when the habit was created.',
   })
   @IsOptional()
   readonly dateAdded: Date | null;

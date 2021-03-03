@@ -12,11 +12,12 @@ import {
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/entities/User';
 import { GetUser } from 'src/users/get-user.decorator';
 
+@ApiBearerAuth()
 @ApiTags('Todo')
 @Controller('todos')
 @UseGuards(AuthGuard())

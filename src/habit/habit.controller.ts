@@ -12,13 +12,14 @@ import {
 import { HabitService } from './habit.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/users/get-user.decorator';
 import { User } from 'src/users/entities/User';
 import { CreateHabitDoneDto } from 'src/habit-done/dto/create-habit-done.dto';
 import { HabitDoneService } from 'src/habit-done/habit-done.service';
 
+@ApiBearerAuth()
 @ApiTags('Habits')
 @Controller('habits')
 @UseGuards(AuthGuard())

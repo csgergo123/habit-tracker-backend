@@ -49,6 +49,9 @@ export class UsersService {
         throw new InternalServerErrorException();
       }
     }
+    delete savedUser.password;
+    delete savedUser.salt;
+
     return savedUser;
   }
 

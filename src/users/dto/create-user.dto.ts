@@ -11,12 +11,12 @@ import {
 } from 'class-validator';
 import { RegisterWith } from '../entities/register-with.enum';
 export class CreateUserDto {
-  @ApiProperty({ example: 'test@test.com', description: 'The email address' })
+  @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;
 
-  @ApiProperty({ example: 'Asd123', description: 'Cleartext password' })
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
@@ -27,21 +27,16 @@ export class CreateUserDto {
   })
   password: string;
 
-  @ApiProperty({ example: 'John', description: 'The first name of the user' })
+  @ApiProperty()
   @IsNotEmpty()
+  @IsString()
   readonly firstName: string;
 
-  @ApiPropertyOptional({
-    example: 'Doe',
-    description: 'The last name of the user',
-  })
+  @ApiPropertyOptional()
   @IsOptional()
   readonly lastName: string | null;
 
-  @ApiPropertyOptional({
-    example: '+361251215',
-    description: 'The phone number of the user',
-  })
+  @ApiPropertyOptional()
   @IsOptional()
   readonly phone: string | null;
 
@@ -50,9 +45,7 @@ export class CreateUserDto {
   @IsEnum(RegisterWith)
   readonly registerWith: RegisterWith;
 
-  @ApiPropertyOptional({
-    description: 'The datetime when the user verified the registration',
-  })
+  @ApiPropertyOptional()
   @IsOptional()
   readonly emailVerifiedAt: Date | null;
 }

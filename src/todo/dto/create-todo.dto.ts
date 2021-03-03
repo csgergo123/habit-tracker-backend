@@ -1,10 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsOptional, Min, Max } from 'class-validator';
 export class CreateTodoDto {
-  @ApiProperty({
-    example: 'First todo',
-    description: 'The title of the todo.',
-  })
+  @ApiProperty()
   @IsNotEmpty()
   readonly title: string;
 
@@ -23,9 +20,7 @@ export class CreateTodoDto {
   @Max(1)
   readonly done: number;
 
-  @ApiPropertyOptional({
-    description: 'The datetime when the todo was created.',
-  })
+  @ApiPropertyOptional()
   @IsOptional()
   readonly dateAdded: Date | null;
 }
