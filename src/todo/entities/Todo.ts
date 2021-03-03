@@ -33,7 +33,7 @@ export class Todo extends BaseEntity {
   dateAdded: Date;
 
   @ApiProperty()
-  @Column('tinyint', { name: 'done' })
+  @Column('tinyint', { name: 'done', default: () => 0 })
   done: number;
 
   @ApiProperty()

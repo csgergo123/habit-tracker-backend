@@ -18,7 +18,8 @@ export class CreateTodoDto {
   @IsInt()
   @Min(0)
   @Max(1)
-  readonly done: number;
+  @IsOptional()
+  readonly done: number | null;
 
   @ApiPropertyOptional()
   @IsOptional()
