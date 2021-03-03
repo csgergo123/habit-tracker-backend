@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { IsEnum } from 'class-validator';
 import { User } from '../../users/entities/User';
 import { HabitDone } from '../../habit-done/entities/HabitDone';
 import { Intensity } from './intensity.enum';

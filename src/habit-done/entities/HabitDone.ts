@@ -27,7 +27,10 @@ export class HabitDone extends BaseEntity {
   habitId: number;
 
   @ApiProperty()
-  @Column('datetime', { name: 'date' })
+  @Column('datetime', {
+    name: 'date',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   date: Date;
 
   @ManyToOne(() => Habit, (habit) => habit.habitDones, {
