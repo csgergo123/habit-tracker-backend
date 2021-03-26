@@ -16,6 +16,9 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  app.enableCors({
+    origin: 'http://localhost:4200',
+  });
 
   const options = new DocumentBuilder()
     .setTitle('Habit tracker API')
