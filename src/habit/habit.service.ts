@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as moment from 'moment';
+
 import { Habit } from './entities/Habit';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
@@ -44,11 +46,48 @@ export class HabitService {
   }
 
   async findOne(user: User, id: number): Promise<Habit> {
-    const found = await this.habitRepository.findOne({ where: { id, user } });
-    if (!found) {
+    const habits = await this.habitRepository.findOne({ where: { id, user } });
+    if (!habits) {
       throw new NotFoundException();
     }
-    return found;
+    return habits;
+  }
+
+  async findToBeDone(user: User): Promise<Habit[]> {
+    let habitsToDone: Habit[] = [];
+    const habits = await this.habitRepository.find({ where: { user } });
+    console.log('found', habits);
+    if (!habits) {
+      throw new NotFoundException();
+    }
+    habits.forEach((habit) => {
+      // If daily regularity then there is no done for today
+      if (habit.regularity == 'daily') {
+        let isDone = false;
+        habit.habitDones.forEach((done) => {
+          if (moment().isSame(done.date, 'day')) {
+            isDone = true;
+          }
+        });
+        if (!isDone) {
+          habitsToDone.push(habit);
+        }
+      }
+
+      // If weekly regularity then there is no done for this week
+      if (habit.regularity == 'weekly') {
+        let isDone = false;
+        habit.habitDones.forEach((done) => {
+          if (moment().isSame(done.date, 'week')) {
+            isDone = true;
+          }
+        });
+        if (!isDone) {
+          habitsToDone.push(habit);
+        }
+      }
+    });
+    return habitsToDone;
   }
 
   async update(

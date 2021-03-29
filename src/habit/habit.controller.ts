@@ -39,6 +39,11 @@ export class HabitController {
     return this.habitService.findAll(user);
   }
 
+  @Get('to-be-done')
+  findToBeDone(@GetUser() user: User) {
+    return this.habitService.findToBeDone(user);
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: string, @GetUser() user: User) {
     return this.habitService.findOne(user, +id);
