@@ -57,12 +57,15 @@ export class UsersService {
 
   async validateUserPassword(
     authCredentialsDto: AuthCredentialsDto,
-  ): Promise<string> {
+  ): Promise<User> {
     const { email, password } = authCredentialsDto;
     const user = await this.usersRepository.findOne({ email });
 
     if (user && (await user.validatePassword(password))) {
-      return user.email;
+      delete user.password;
+      delete user.salt;
+
+      return user;
     }
     return null;
   }
@@ -70,14 +73,20 @@ export class UsersService {
   async signIn(
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
-    const email = await this.validateUserPassword(authCredentialsDto);
+    const {
+      id,
+      email,
+      firstName,
+      lastName,
+      phone,
+    } = await this.validateUserPassword(authCredentialsDto);
 
     if (!email) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload: JwtPayload = { email };
-    const accessToken = await this.jwtService.sign(payload);
+    const payload: JwtPayload = { id, email, firstName, lastName, phone };
+    const accessToken = this.jwtService.sign(payload);
 
     return { accessToken };
   }
