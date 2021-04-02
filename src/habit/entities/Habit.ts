@@ -7,7 +7,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { IsEnum } from 'class-validator';
 import { User } from '../../users/entities/User';
 import { HabitDone } from '../../habit-done/entities/HabitDone';
 import { Intensity } from './intensity.enum';
@@ -25,11 +24,18 @@ export class Habit extends BaseEntity {
   @Column('varchar', { name: 'title', length: 255 })
   title: string;
 
+  @ApiProperty()
   @Column('datetime', {
     name: 'date_added',
     default: () => 'CURRENT_TIMESTAMP',
   })
   dateAdded: Date;
+
+  @ApiProperty()
+  @Column('date', {
+    name: 'start_date',
+  })
+  startDate: Date;
 
   @ApiProperty({
     example: 'daily',
@@ -51,7 +57,7 @@ export class Habit extends BaseEntity {
     example: 'lightblue',
     description: 'The color of the habit in the frontend.',
   })
-  @Column('varchar', { name: 'color', length: 45, default: 'lightblue' })
+  @Column('varchar', { name: 'color', length: 100, default: 'lightblue' })
   color: string | null;
 
   @ManyToOne(() => User, (user) => user.habits, {

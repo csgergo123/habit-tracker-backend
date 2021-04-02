@@ -24,6 +24,7 @@ export class HabitService {
 
   async create(createHabitDto: CreateHabitDto, user: User) {
     const habit = new Habit({ ...createHabitDto, user });
+    console.log('habit', habit);
 
     try {
       const savedHabit = await this.habitRepository.save(habit);
@@ -56,7 +57,6 @@ export class HabitService {
   async findToBeDone(user: User): Promise<Habit[]> {
     let habitsToDone: Habit[] = [];
     const habits = await this.habitRepository.find({ where: { user } });
-    console.log('found', habits);
     if (!habits) {
       throw new NotFoundException();
     }

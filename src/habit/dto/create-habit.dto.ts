@@ -36,9 +36,8 @@ export class CreateHabitDto {
   @IsOptional()
   readonly color: string | null;
 
-  @ApiPropertyOptional({
-    default: moment().format('YYYY-MM-DD HH:mm:ss'),
+  @ApiProperty({
+    default: moment().format('YYYY-MM-DD'),
   })
-  @IsOptional()
-  readonly dateAdded: Date | null;
+  readonly startDate: Date;
 }
