@@ -54,7 +54,7 @@ export class TodoService {
 
   async findUndones(user: User): Promise<Todo[]> {
     const todos = await this.todoRepository.find({
-      where: { user, done: 0, dateAdded: LessThanOrEqual(moment().format()) },
+      where: { user, done: 0, issueDate: LessThanOrEqual(moment().format()) },
     });
     if (!todos) {
       throw new NotFoundException();
