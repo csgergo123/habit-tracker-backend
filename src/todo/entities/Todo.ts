@@ -33,6 +33,12 @@ export class Todo extends BaseEntity {
   dateAdded: Date;
 
   @ApiProperty()
+  @Column('date', {
+    name: 'issue_date',
+  })
+  issueDate: Date;
+
+  @ApiProperty()
   @Column('tinyint', { name: 'done', default: () => 0 })
   done: number;
 

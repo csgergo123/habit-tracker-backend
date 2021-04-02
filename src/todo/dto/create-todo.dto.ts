@@ -1,5 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsOptional, Min, Max } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
+import * as moment from 'moment';
+
 export class CreateTodoDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -15,13 +17,11 @@ export class CreateTodoDto {
   @ApiPropertyOptional({
     description: 'Is the todo done.',
   })
-  @IsInt()
-  @Min(0)
-  @Max(1)
   @IsOptional()
   readonly done: number | null;
 
-  @ApiPropertyOptional()
-  @IsOptional()
-  readonly dateAdded: Date | null;
+  @ApiProperty({
+    default: moment().format('YYYY-MM-DD'),
+  })
+  readonly issueDate: Date;
 }
