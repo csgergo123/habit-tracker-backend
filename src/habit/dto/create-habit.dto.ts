@@ -25,7 +25,7 @@ export class CreateHabitDto {
   })
   @IsNotEmpty()
   @IsEnum(Intensity, {
-    message: "Intensity can be 'weak', 'normal' or 'strong'.",
+    message: "Intensity can be 'easy', 'normal' or 'hard'.",
   })
   readonly intensity: Intensity;
 
