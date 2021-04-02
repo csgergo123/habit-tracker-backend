@@ -6,7 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/User';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
+import * as moment from 'moment';
+
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './entities/Todo';
@@ -22,6 +24,7 @@ export class TodoService {
 
   async create(createTodoDto: CreateTodoDto, user: User) {
     const todo = new Todo({ ...createTodoDto, user });
+    console.log('todo', todo);
 
     try {
       const savedTodo = await this.todoRepository.save(todo);
@@ -47,6 +50,16 @@ export class TodoService {
       throw new NotFoundException();
     }
     return found;
+  }
+
+  async findUndones(user: User): Promise<Todo[]> {
+    const todos = await this.todoRepository.find({
+      where: { user, done: 0, dateAdded: LessThanOrEqual(moment().format()) },
+    });
+    if (!todos) {
+      throw new NotFoundException();
+    }
+    return todos;
   }
 
   async update(user: User, updateTodoDto: UpdateTodoDto, id: number) {
