@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   BaseEntity,
   Column,
@@ -25,7 +25,7 @@ export class Todo extends BaseEntity {
   @Column('varchar', { name: 'title', length: 255 })
   title: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Column('datetime', {
     name: 'date_added',
     default: () => 'CURRENT_TIMESTAMP',

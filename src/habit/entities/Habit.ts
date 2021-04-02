@@ -10,7 +10,7 @@ import {
 import { User } from '../../users/entities/User';
 import { HabitDone } from '../../habit-done/entities/HabitDone';
 import { Intensity } from './intensity.enum';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity('habit', { schema: 'habit_tracker' })
 export class Habit extends BaseEntity {
@@ -24,7 +24,7 @@ export class Habit extends BaseEntity {
   @Column('varchar', { name: 'title', length: 255 })
   title: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Column('datetime', {
     name: 'date_added',
     default: () => 'CURRENT_TIMESTAMP',
