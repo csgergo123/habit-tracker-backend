@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
 import * as moment from 'moment';
 
 import { Habit } from './entities/Habit';
@@ -55,8 +55,13 @@ export class HabitService {
   }
 
   async findToBeDone(user: User): Promise<Habit[]> {
-    let habitsToDone: Habit[] = [];
-    const habits = await this.habitRepository.find({ where: { user } });
+    const habitsToDone: Habit[] = [];
+    const habits = await this.habitRepository.find({
+      where: {
+        user,
+        startDate: LessThanOrEqual(moment().format()),
+      },
+    });
     if (!habits) {
       throw new NotFoundException();
     }
