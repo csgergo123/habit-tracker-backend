@@ -34,7 +34,7 @@ export class HabitDone extends BaseEntity {
   date: Date;
 
   @ManyToOne(() => Habit, (habit) => habit.habitDones, {
-    onDelete: 'NO ACTION',
+    onDelete: 'CASCADE',
     onUpdate: 'NO ACTION',
   })
   @JoinColumn([{ name: 'habit_id', referencedColumnName: 'id' }])
