@@ -1,0 +1,12 @@
+{
+  "db": {
+    "url": "DB_URL",
+    "port": "DB_PORT",
+    "database": "DB_NAME",
+    "username": "DB_USER",
+    "password": "DB_PASSWORD"
+  },
+  "jwt": {
+    "secret": "JWT_SECRET"
+  }
+}
