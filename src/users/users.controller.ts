@@ -6,37 +6,68 @@ import {
   Put,
   Param,
   Delete,
+  ParseIntPipe,
+  Logger,
 } from '@nestjs/common';
+
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
+  private logger = new Logger('UserController');
+
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('/signUp')
+  @ApiOperation({ summary: 'Regist user' })
+  @ApiResponse({ status: 201, description: 'The user record.' })
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    this.logger.log(`A new user created. ${JSON.stringify(createUserDto)}`);
+    return this.usersService.signUp(createUserDto);
+  }
+
+  @Post('/signIn')
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: 201 })
+  signIn(
+    @Body() authCredentialsDto: AuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    return this.usersService.signIn(authCredentialsDto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 201, description: 'Array of the user records.' })
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @ApiOperation({ summary: 'Get user' })
+  @ApiResponse({ status: 201, description: 'The user record.' })
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.findOne(+id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  @ApiOperation({ summary: 'Update user' })
+  @ApiResponse({ status: 201, description: 'The updated user record.' })
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @ApiOperation({ summary: 'Remove user' })
+  @ApiResponse({ status: 201, description: 'Remove user.' })
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.remove(+id);
   }
 }
