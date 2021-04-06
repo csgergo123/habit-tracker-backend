@@ -1,6 +1,10 @@
 {
   "name": "habbit-tracker",
   "version": "0.0.1",
+  "engines": {
+    "node": "15.x",
+    "npm": "7.x"
+  },
   "description": "",
   "author": "",
   "private": true,
