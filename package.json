@@ -30,6 +30,7 @@
     "@nestjs/swagger": "^4.7.5",
     "@nestjs/terminus": "^7.0.1",
     "@nestjs/typeorm": "^7.1.5",
+    "@types/validator": "^13.0.0",
     "bcrypt": "^5.0.0",
     "config": "^3.3.3",
     "moment": "^2.29.1",
