@@ -21,9 +21,9 @@ import { User } from 'src/users/entities/User';
 export class HabitDoneController {
   constructor(private readonly habitDoneService: HabitDoneService) {}
 
-  @Get('/last-week')
-  getHabitDonesForLastWeek(@GetUser() user: User) {
-    return this.habitDoneService.getHabitDonesForLastWeek(user);
+  @Get('/daily/last-week')
+  getDailyHabitDonesForLastWeek(@GetUser() user: User) {
+    return this.habitDoneService.getDailyHabitDonesForLastWeek(user);
   }
 
   @Delete(':id')

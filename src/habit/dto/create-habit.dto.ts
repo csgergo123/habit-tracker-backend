@@ -17,7 +17,7 @@ export class CreateHabitDto {
       "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
   })
   @IsNotEmpty()
-  readonly regularity: string;
+  readonly regularity: Regularity;
 
   @ApiProperty({
     default: 'normal',

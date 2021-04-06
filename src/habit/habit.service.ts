@@ -47,7 +47,10 @@ export class HabitService {
   }
 
   async findOne(user: User, id: number): Promise<Habit> {
-    const habits = await this.habitRepository.findOne({ where: { id, user } });
+    const habits = await this.habitRepository.findOne({
+      where: { id, user },
+      relations: ['habitDones'],
+    });
     if (!habits) {
       throw new NotFoundException();
     }
@@ -61,6 +64,7 @@ export class HabitService {
         user,
         startDate: LessThanOrEqual(moment().format()),
       },
+      relations: ['habitDones'],
     });
     if (!habits) {
       throw new NotFoundException();

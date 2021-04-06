@@ -11,6 +11,7 @@ import { User } from '../../users/entities/User';
 import { HabitDone } from '../../habit-done/entities/HabitDone';
 import { Intensity } from './intensity.enum';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Regularity } from './regularity.enum';
 
 @Entity('habit', { schema: 'habit_tracker' })
 export class Habit extends BaseEntity {
@@ -43,7 +44,7 @@ export class Habit extends BaseEntity {
       "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
   })
   @Column('varchar', { name: 'regularity', length: 50 })
-  regularity: string;
+  regularity: Regularity;
 
   @ApiProperty({
     example: 'normal',
@@ -68,7 +69,7 @@ export class Habit extends BaseEntity {
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
 
-  @OneToMany(() => HabitDone, (habitDone) => habitDone.habit, { eager: true })
+  @OneToMany(() => HabitDone, (habitDone) => habitDone.habit, { eager: false })
   habitDones: HabitDone[];
 
   constructor(init?: Partial<Habit>) {

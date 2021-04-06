@@ -5,13 +5,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThanOrEqual } from 'typeorm';
+import { Repository, MoreThanOrEqual, Like } from 'typeorm';
 import * as moment from 'moment';
 
 import { HabitService } from 'src/habit/habit.service';
 import { User } from 'src/users/entities/User';
 import { CreateHabitDoneDto } from './dto/create-habit-done.dto';
 import { HabitDone } from './entities/HabitDone';
+import { Regularity } from 'src/habit/entities/regularity.enum';
 
 @Injectable()
 export class HabitDoneService {
@@ -61,14 +62,20 @@ export class HabitDoneService {
     }
   }
 
-  async getHabitDonesForLastWeek(user: User): Promise<number[]> {
+  async getDailyHabitDonesForLastWeek(user: User): Promise<number[]> {
     const dailyHabitDones: number[] = [];
     const lastWeek = moment().subtract(7, 'd').format('YYYY-MM-DD');
     const today = moment();
 
     const habitDones = await this.habitDoneRepository.find({
-      where: { user, date: MoreThanOrEqual(lastWeek) },
+      where: {
+        user,
+        date: MoreThanOrEqual(lastWeek),
+        //habit: { regularity: Regularity.daily },  // TODO
+      },
+      relations: ['habit'],
     });
+    //console.log('habitDones', habitDones);
 
     if (!habitDones) {
       throw new NotFoundException();
