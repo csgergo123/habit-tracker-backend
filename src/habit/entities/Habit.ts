@@ -18,6 +18,10 @@ export class Habit extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @ApiProperty()
+  @Column('int', { name: 'user_id' })
+  userId: number;
+
   @ApiProperty({
     example: 'Do the homework',
     description: 'The title of the habit.',
@@ -25,41 +29,44 @@ export class Habit extends BaseEntity {
   @Column('varchar', { name: 'title', length: 255 })
   title: string;
 
-  @ApiPropertyOptional()
-  @Column('datetime', {
-    name: 'date_added',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  dateAdded: Date;
-
-  @ApiProperty()
-  @Column('date', {
-    name: 'start_date',
-  })
-  startDate: Date;
-
   @ApiProperty({
-    example: 'daily',
-    description:
-      "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
+    example: 'lightblue',
+    description: 'The color of the habit in the frontend.',
   })
-  @Column('varchar', { name: 'regularity', length: 50 })
-  regularity: Regularity;
+  @Column('varchar', { name: 'color', length: 45 })
+  color: string;
 
   @ApiProperty({
     example: 'normal',
     description: 'The difficulty of the habit.',
     enum: Intensity,
   })
-  @Column('enum', { name: 'intensity', enum: Intensity })
+  @Column('varchar', { name: 'intensity', length: 45 })
   intensity: Intensity;
 
   @ApiProperty({
-    example: 'lightblue',
-    description: 'The color of the habit in the frontend.',
+    example: 'daily',
+    description:
+      "The interval of the habit. Should be 'daily' or 'weekly' but the user can add his own.",
+    enum: Regularity,
   })
-  @Column('varchar', { name: 'color', length: 100, default: 'lightblue' })
-  color: string | null;
+  @Column('varchar', { name: 'regularity', length: 50 })
+  regularity: Regularity;
+
+  @ApiPropertyOptional()
+  @Column({
+    type: 'timestamp',
+    name: 'date_added',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  dateAdded: Date;
+
+  @ApiProperty()
+  @Column({
+    type: 'date',
+    name: 'start_date',
+  })
+  startDate: Date;
 
   @ManyToOne(() => User, (user) => user.habits, {
     eager: false,
