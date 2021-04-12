@@ -26,6 +26,11 @@ export class HabitDoneController {
     return this.habitDoneService.getDailyHabitDonesForLastWeek(user);
   }
 
+  @Get('/weekly/last-month')
+  getWeeklyHabitDonesForLastMonth(@GetUser() user: User) {
+    return this.habitDoneService.getWeeklyHabitDonesForLastMonth(user);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string, @GetUser() user: User) {
     return this.habitDoneService.remove(user, +id);
