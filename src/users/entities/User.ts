@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
 import * as bcrypt from 'bcrypt';
@@ -30,18 +30,18 @@ export class User extends BaseEntity {
 
   @ApiProperty()
   @Exclude()
-  @Column('varchar', { name: 'password', length: 255 })
+  @Column('varchar', { name: 'password', nullable: true, length: 255 })
   password: string | null;
 
   @ApiProperty()
   @Column('varchar', { name: 'first_name', length: 100 })
   firstName: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Column('varchar', { name: 'last_name', nullable: true, length: 100 })
   lastName: string | null;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Column('varchar', { name: 'phone', nullable: true, length: 45 })
   phone: string | null;
 
@@ -52,7 +52,7 @@ export class User extends BaseEntity {
   @Column('varchar', { name: 'register_with', length: 45 })
   registerWith: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Column('datetime', { name: 'email_verified_at', nullable: true })
   emailVerifiedAt: Date | null;
 
