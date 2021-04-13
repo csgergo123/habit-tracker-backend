@@ -2,6 +2,6 @@ db:
   synchronize: 'false'
 
 frontend:
-  url: "https://habit-tracker-34lkwhmna-csgergo123.vercel.app"
+  url: "http://habittracker.codes/"
 
 url: "https://de-habit-tracker-backend.herokuapp.com/"
