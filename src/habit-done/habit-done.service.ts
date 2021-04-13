@@ -1,3 +1,4 @@
+import { DailyHabitDoneDto } from './dto/daily-habit-done.dto';
 import {
   Injectable,
   InternalServerErrorException,
@@ -13,6 +14,7 @@ import { User } from 'src/users/entities/User';
 import { CreateHabitDoneDto } from './dto/create-habit-done.dto';
 import { HabitDone } from './entities/HabitDone';
 import { Regularity } from 'src/habit/entities/regularity.enum';
+import { WeeklyHabitDoneDto } from './dto/weekly-habit-done.dto';
 
 @Injectable()
 export class HabitDoneService {
@@ -62,27 +64,41 @@ export class HabitDoneService {
     }
   }
 
-  async getDailyHabitDonesForLastWeek(user: User): Promise<number[]> {
-    const dailyHabitDones: number[] = [];
+  async getDailyHabitDonesForLastWeek(
+    user: User,
+  ): Promise<DailyHabitDoneDto[]> {
+    const dailyHabitDones: DailyHabitDoneDto[] = [];
     const lastWeek = moment().subtract(7, 'd').format('YYYY-MM-DD');
-    const today = moment();
+    // Set finish date
+    const tomorrow = moment().add(1, 'days');
 
+    // const habitDones = await this.habitDoneRepository.find({
+    //   where: {
+    //     user,
+    //     date: MoreThanOrEqual(lastWeek),
+    //     habit: { regularity: Like('daily') }, // TODO
+    //   },
+    //   relations: ['habit'],
+    // });
+
+    // Workaround solution because the TypeORM where not working in relation
     const habitDones = await this.habitDoneRepository.find({
-      where: {
-        user,
-        date: MoreThanOrEqual(lastWeek),
-        //habit: { regularity: Regularity.daily },  // TODO
+      join: { alias: 'habit-done', innerJoin: { habit: 'habit-done.habit' } },
+      where: (qb) => {
+        qb.where({
+          user,
+          date: MoreThanOrEqual(lastWeek),
+        }).andWhere('habit.regularity = :reg', { reg: Regularity.daily }); // Filter related field
       },
-      relations: ['habit'],
     });
-    //console.log('habitDones', habitDones);
 
     if (!habitDones) {
       throw new NotFoundException();
     }
 
     // Set initial day what is today - 7 days
-    let day = moment().subtract(7, 'd');
+    let day = moment().startOf('day').subtract(6, 'd');
+
     // Loop through the last week days
     do {
       let count = 0;
@@ -92,10 +108,69 @@ export class HabitDoneService {
           count++;
         }
       });
-      dailyHabitDones.push(count);
+      const dailyDone = {
+        day: moment(day).format('dddd'),
+        dones: count,
+      };
+      dailyHabitDones.push(dailyDone);
       day = day.add(1, 'd');
-    } while (!today.isSame(moment(day).format(), 'day'));
+    } while (!tomorrow.isSame(moment(day).format(), 'day'));
 
     return dailyHabitDones;
+  }
+
+  async getWeeklyHabitDonesForLastMonth(
+    user: User,
+  ): Promise<WeeklyHabitDoneDto[]> {
+    const weeklyHabitDones: WeeklyHabitDoneDto[] = [];
+    const lastMonth = moment().subtract(1, 'month').format('YYYY-MM-DD');
+    // Set finish date
+    const nextWeek = moment().add(1, 'week');
+
+    // const habitDones = await this.habitDoneRepository.find({
+    //   where: {
+    //     user,
+    //     date: MoreThanOrEqual(lastMonth),
+    //     habit: { regularity: Like(Regularity.weekly) }, // TODO
+    //   },
+    //   relations: ['habit'],
+    // });
+
+    // Workaround solution because the TypeORM where not working in relation
+    const habitDones = await this.habitDoneRepository.find({
+      join: { alias: 'habit-done', innerJoin: { habit: 'habit-done.habit' } },
+      where: (qb) => {
+        qb.where({
+          user,
+          date: MoreThanOrEqual(lastMonth),
+        }).andWhere('habit.regularity = :reg', { reg: Regularity.weekly }); // Filter related field
+      },
+    });
+
+    if (!habitDones) {
+      throw new NotFoundException();
+    }
+
+    // Set initial day what is today - 1 month
+    let week = moment().startOf('day').subtract(1, 'month');
+
+    // Loop through the last week days
+    do {
+      let count = 0;
+      // Loop through the last week habit dones and get where date is the actual day
+      habitDones.forEach((done: HabitDone) => {
+        if (moment(done.date).isSame(week, 'week')) {
+          count++;
+        }
+      });
+      const weeklyDone = {
+        week: moment(week).week() + 'th',
+        dones: count,
+      };
+      weeklyHabitDones.push(weeklyDone);
+      week = week.add(1, 'week');
+    } while (!nextWeek.isSame(moment(week).format(), 'week'));
+
+    return weeklyHabitDones;
   }
 }

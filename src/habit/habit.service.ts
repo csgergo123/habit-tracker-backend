@@ -24,7 +24,6 @@ export class HabitService {
 
   async create(createHabitDto: CreateHabitDto, user: User) {
     const habit = new Habit({ ...createHabitDto, user });
-    console.log('habit', habit);
 
     try {
       const savedHabit = await this.habitRepository.save(habit);

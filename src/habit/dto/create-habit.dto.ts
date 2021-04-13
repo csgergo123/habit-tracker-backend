@@ -29,12 +29,11 @@ export class CreateHabitDto {
   })
   readonly intensity: Intensity;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     default: 'lightblue',
     description: 'The color of the habit in the frontend.',
   })
-  @IsOptional()
-  readonly color: string | null;
+  readonly color: string;
 
   @ApiProperty({
     default: moment().format('YYYY-MM-DD'),

@@ -8,6 +8,7 @@ import { User } from './entities/User';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { GoogleStrategy } from './google.strategy';
 const jwtConfig = config.get('jwt');
 
 @Module({
@@ -23,7 +24,7 @@ const jwtConfig = config.get('jwt');
       defaultStrategy: 'jwt',
     }),
   ],
-  providers: [UsersService, JwtStrategy],
+  providers: [UsersService, JwtStrategy, GoogleStrategy],
   controllers: [UsersController],
   exports: [JwtStrategy, PassportModule],
 })

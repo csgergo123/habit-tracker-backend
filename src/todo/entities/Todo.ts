@@ -26,14 +26,16 @@ export class Todo extends BaseEntity {
   title: string;
 
   @ApiPropertyOptional()
-  @Column('datetime', {
+  @Column({
+    type: 'timestamp',
     name: 'date_added',
     default: () => 'CURRENT_TIMESTAMP',
   })
   dateAdded: Date;
 
   @ApiProperty()
-  @Column('date', {
+  @Column({
+    type: 'date',
     name: 'issue_date',
   })
   issueDate: Date;

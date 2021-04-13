@@ -15,9 +15,12 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './entities/jwt-payload.interface';
+import { GoogleProfileDto } from './dto/google-profile.dto';
 
 @Injectable()
 export class UsersService {
+  private logger = new Logger('UserService');
+
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
@@ -84,6 +87,48 @@ export class UsersService {
     if (!email) {
       throw new UnauthorizedException('Invalid credentials');
     }
+
+    const payload: JwtPayload = { id, email, firstName, lastName, phone };
+    const accessToken = this.jwtService.sign(payload);
+
+    return { accessToken };
+  }
+
+  private async registerGoogleUser(profile: GoogleProfileDto): Promise<User> {
+    const user = await this.usersRepository.findOne({
+      email: profile.emails[0].value,
+    });
+    if (user) return user;
+
+    let savedUser: User;
+    try {
+      savedUser = await this.usersRepository.save({
+        email: profile.emails[0].value,
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        registerWith: 'google',
+      });
+    } catch (error) {
+      this.logger.error(
+        'Error during save Google user to the database.',
+        error.stack,
+      );
+      throw new InternalServerErrorException();
+    }
+
+    return savedUser;
+  }
+
+  async signInWithGoogle(
+    profile: GoogleProfileDto,
+  ): Promise<{ accessToken: string }> {
+    const {
+      id,
+      email,
+      firstName,
+      lastName,
+      phone,
+    } = await this.registerGoogleUser(profile);
 
     const payload: JwtPayload = { id, email, firstName, lastName, phone };
     const accessToken = this.jwtService.sign(payload);

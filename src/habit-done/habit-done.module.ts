@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HabitDoneService } from './habit-done.service';
 import { HabitDoneController } from './habit-done.controller';
 import { HabitDone } from './entities/HabitDone';
-import { HabitService } from 'src/habit/habit.service';
 import { HabitModule } from 'src/habit/habit.module';
 import { UsersModule } from 'src/users/users.module';
 

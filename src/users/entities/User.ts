@@ -31,7 +31,7 @@ export class User extends BaseEntity {
   @ApiProperty()
   @Exclude()
   @Column('varchar', { name: 'password', length: 255 })
-  password: string;
+  password: string | null;
 
   @ApiProperty()
   @Column('varchar', { name: 'first_name', length: 100 })
@@ -65,7 +65,7 @@ export class User extends BaseEntity {
 
   @ApiProperty()
   @Column({ length: 100 })
-  salt: string;
+  salt: string | null;
 
   @OneToMany(() => Habit, (habit) => habit.user, { eager: true })
   habits: Habit[];

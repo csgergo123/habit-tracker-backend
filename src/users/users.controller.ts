@@ -8,13 +8,19 @@ import {
   Delete,
   ParseIntPipe,
   Logger,
+  UseGuards,
+  Req,
+  Res,
 } from '@nestjs/common';
+import * as config from 'config';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthGuard } from '@nestjs/passport';
+const frontend = config.get('frontend');
 
 @ApiTags('Users')
 @Controller('users')
@@ -45,6 +51,22 @@ export class UsersController {
   @ApiResponse({ status: 201, description: 'Array of the user records.' })
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  googleLogin() {
+    // initiates the Google OAuth2 login flow
+  }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  googleLoginCallback(@Req() req, @Res() res) {
+    // handles the Google OAuth2 callback
+    const accessToken: string = req.user.accessToken;
+    if (accessToken)
+      res.redirect(`${frontend.url}/login/success/` + accessToken);
+    else res.redirect(`${frontend.url}/login/failure`);
   }
 
   @Get(':id')
