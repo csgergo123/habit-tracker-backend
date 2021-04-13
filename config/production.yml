@@ -3,3 +3,5 @@ db:
 
 frontend:
   url: "https://habit-tracker-34lkwhmna-csgergo123.vercel.app"
+
+url: "https://de-habit-tracker-backend.herokuapp.com/"
