@@ -64,7 +64,7 @@ export class User extends BaseEntity {
   updatedAt: Date | null;
 
   @ApiProperty()
-  @Column({ length: 100 })
+  @Column({ length: 100, nullable: true })
   salt: string | null;
 
   @OneToMany(() => Habit, (habit) => habit.user, { eager: true })
