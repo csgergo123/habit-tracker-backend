@@ -10,7 +10,7 @@
     "secret": "JWT_SECRET"
   },
   "google": {
-    "clientId": "GOOGLE_CLIENT_ID",
+    "clientID": "GOOGLE_CLIENT_ID",
     "clientSecret": "GOOGLE_CLIENT_SECRET"
   }
 }
