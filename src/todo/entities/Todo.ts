@@ -45,7 +45,12 @@ export class Todo extends BaseEntity {
   done: number;
 
   @ApiProperty()
-  @Column('varchar', { name: 'color', length: 45, default: 'lightblue' })
+  @Column('varchar', {
+    name: 'color',
+    length: 45,
+    default: 'lightblue',
+    nullable: true,
+  })
   color: string | null;
 
   @ManyToOne(() => User, (user) => user.todos, {
