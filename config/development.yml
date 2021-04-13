@@ -2,7 +2,11 @@ db:
   host: 'localhost'
   username: 'root'
   password: 'Asd123'
-  synchronize: 'false'
+  synchronize: false
 
 jwt:
   secret: 'topSecret51'
+
+google:
+  clientID: '102938850214-1nu0luc9gfu93kh2e3qginefof1d86i2.apps.googleusercontent.com'
+  clientSecret: 'n6MavoHSSyw4ZHbRBUGd9kQD'
