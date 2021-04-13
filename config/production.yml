@@ -1,2 +1,5 @@
 db:
   synchronize: 'false'
+
+frontend:
+  url: "https://habit-tracker-34lkwhmna-csgergo123.vercel.app"

@@ -10,3 +10,6 @@ jwt:
 google:
   clientID: '102938850214-1nu0luc9gfu93kh2e3qginefof1d86i2.apps.googleusercontent.com'
   clientSecret: 'n6MavoHSSyw4ZHbRBUGd9kQD'
+
+frontend:
+  url: "http://localhost:4200"

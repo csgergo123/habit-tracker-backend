@@ -12,6 +12,7 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
+import * as config from 'config';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +20,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthGuard } from '@nestjs/passport';
+const frontend = config.get('frontend');
 
 @ApiTags('Users')
 @Controller('users')
@@ -63,8 +65,8 @@ export class UsersController {
     // handles the Google OAuth2 callback
     const accessToken: string = req.user.accessToken;
     if (accessToken)
-      res.redirect('http://localhost:4200/login/succes/' + accessToken);
-    else res.redirect('http://localhost:4200/login/failure');
+      res.redirect(`${frontend.url}/login/success/` + accessToken);
+    else res.redirect(`${frontend.url}/login/failure`);
   }
 
   @Get(':id')
