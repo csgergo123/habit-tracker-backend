@@ -6,6 +6,7 @@ import { Strategy } from 'passport-google-oauth20';
 import { UsersService } from './users.service';
 
 const googleConfig = config.get('google');
+const url = config.get('url');
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -13,7 +14,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: googleConfig.clientID,
       clientSecret: googleConfig.clientSecret,
-      callbackURL: 'http://localhost:3000/users/google/callback',
+      callbackURL: `${url}/users/google/callback`,
       passReqToCallback: true,
       scope: ['profile email'],
     });
