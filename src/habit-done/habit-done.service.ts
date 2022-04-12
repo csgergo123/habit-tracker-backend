@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThanOrEqual, Like } from 'typeorm';
+import { Repository, MoreThanOrEqual } from 'typeorm';
 import * as moment from 'moment';
 
 import { HabitService } from 'src/habit/habit.service';
@@ -72,15 +72,6 @@ export class HabitDoneService {
     // Set finish date
     const tomorrow = moment().add(1, 'days');
 
-    // const habitDones = await this.habitDoneRepository.find({
-    //   where: {
-    //     user,
-    //     date: MoreThanOrEqual(lastWeek),
-    //     habit: { regularity: Like('daily') }, // TODO
-    //   },
-    //   relations: ['habit'],
-    // });
-
     // Workaround solution because the TypeORM where not working in relation
     const habitDones = await this.habitDoneRepository.find({
       join: { alias: 'habit-done', innerJoin: { habit: 'habit-done.habit' } },
@@ -126,15 +117,6 @@ export class HabitDoneService {
     const lastMonth = moment().subtract(1, 'month').format('YYYY-MM-DD');
     // Set finish date
     const nextWeek = moment().add(1, 'week');
-
-    // const habitDones = await this.habitDoneRepository.find({
-    //   where: {
-    //     user,
-    //     date: MoreThanOrEqual(lastMonth),
-    //     habit: { regularity: Like(Regularity.weekly) }, // TODO
-    //   },
-    //   relations: ['habit'],
-    // });
 
     // Workaround solution because the TypeORM where not working in relation
     const habitDones = await this.habitDoneRepository.find({

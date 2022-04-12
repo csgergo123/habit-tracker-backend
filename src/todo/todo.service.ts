@@ -63,7 +63,6 @@ export class TodoService {
   }
 
   async update(user: User, updateTodoDto: UpdateTodoDto, id: number) {
-    //const todo = await this.findOne(user, id);
     const result = await this.todoRepository.update(
       { id, user },
       { ...updateTodoDto },

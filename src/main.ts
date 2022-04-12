@@ -11,11 +11,7 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
 
   const app = await NestFactory.create(AppModule);
-  /*app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-    }),
-  );*/
+
   app.enableCors();
 
   const options = new DocumentBuilder()
