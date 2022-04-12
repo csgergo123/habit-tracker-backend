@@ -3,7 +3,7 @@ server:
 
 db:
   type: 'mysql'
-  port: 3306
+  port: 30000
   database: 'habit_tracker'
 
 jwt:
