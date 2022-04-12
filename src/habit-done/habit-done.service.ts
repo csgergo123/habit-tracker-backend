@@ -38,6 +38,7 @@ export class HabitDoneService {
 
   async remove(user: User, id: number): Promise<void> {
     const result = await this.habitDoneRepository.delete({ id, user });
+    this.logger.log(`Remove #${id} habit`);
     if (result.affected === 0) {
       throw new NotFoundException(`The habit done with ID ${id} not found.`);
     }
@@ -53,6 +54,7 @@ export class HabitDoneService {
 
     try {
       await this.habitDoneRepository.save(habitDone);
+      this.logger.log(`Habit #${id} mark as done`);
     } catch (error) {
       this.logger.error(
         `Error during save habit done to the database. Habit: ${JSON.stringify(
