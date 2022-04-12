@@ -63,20 +63,20 @@ export class TodoService {
   }
 
   async update(user: User, updateTodoDto: UpdateTodoDto, id: number) {
-    //const todo = await this.findOne(user, id);
     const result = await this.todoRepository.update(
       { id, user },
       { ...updateTodoDto },
     );
+    this.logger.debug(`Update #${id} habit.`, JSON.stringify(result));
     if (result.affected === 0) {
-      throw new NotFoundException(`The todo with ID ${id} not found.`);
+      throw new NotFoundException(`Todo #${id} not found.`);
     }
   }
 
   async remove(user: User, id: number): Promise<void> {
     const result = await this.todoRepository.delete({ id, user });
     if (result.affected === 0) {
-      throw new NotFoundException(`The todo with ID ${id} not found.`);
+      throw new NotFoundException(`Todo #${id} not found.`);
     }
   }
 }

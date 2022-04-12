@@ -107,6 +107,7 @@ export class HabitService {
       { id, user },
       { ...updateHabitDto },
     );
+    this.logger.debug(`Update #${id} habit.`, JSON.stringify(updateHabitDto));
     if (result.affected === 0) {
       throw new NotFoundException(`The habit with ID ${id} not found.`);
     }

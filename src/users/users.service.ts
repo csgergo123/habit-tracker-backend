@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -140,15 +141,26 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
-    return this.usersRepository.findOne(id);
+  async findOne(id: number): Promise<User> {
+    const user = await this.usersRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update(id, { ...updateUserDto });
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const result = await this.usersRepository.update(id, { ...updateUserDto });
+    this.logger.debug(`Update #${id} user.`, JSON.stringify(updateUserDto));
+    if (result.affected === 0) {
+      throw new NotFoundException(`User #${id} not found.`);
+    }
   }
 
   async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    const result = await this.usersRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`User #${id} not found.`);
+    }
   }
 }

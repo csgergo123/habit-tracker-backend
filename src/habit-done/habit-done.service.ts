@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThanOrEqual, Like } from 'typeorm';
+import { Repository, MoreThanOrEqual } from 'typeorm';
 import * as moment from 'moment';
 
 import { HabitService } from 'src/habit/habit.service';
@@ -38,6 +38,7 @@ export class HabitDoneService {
 
   async remove(user: User, id: number): Promise<void> {
     const result = await this.habitDoneRepository.delete({ id, user });
+    this.logger.log(`Remove #${id} habit`);
     if (result.affected === 0) {
       throw new NotFoundException(`The habit done with ID ${id} not found.`);
     }
@@ -53,6 +54,7 @@ export class HabitDoneService {
 
     try {
       await this.habitDoneRepository.save(habitDone);
+      this.logger.log(`Habit #${id} mark as done`);
     } catch (error) {
       this.logger.error(
         `Error during save habit done to the database. Habit: ${JSON.stringify(
@@ -71,15 +73,6 @@ export class HabitDoneService {
     const lastWeek = moment().subtract(7, 'd').format('YYYY-MM-DD');
     // Set finish date
     const tomorrow = moment().add(1, 'days');
-
-    // const habitDones = await this.habitDoneRepository.find({
-    //   where: {
-    //     user,
-    //     date: MoreThanOrEqual(lastWeek),
-    //     habit: { regularity: Like('daily') }, // TODO
-    //   },
-    //   relations: ['habit'],
-    // });
 
     // Workaround solution because the TypeORM where not working in relation
     const habitDones = await this.habitDoneRepository.find({
@@ -126,15 +119,6 @@ export class HabitDoneService {
     const lastMonth = moment().subtract(1, 'month').format('YYYY-MM-DD');
     // Set finish date
     const nextWeek = moment().add(1, 'week');
-
-    // const habitDones = await this.habitDoneRepository.find({
-    //   where: {
-    //     user,
-    //     date: MoreThanOrEqual(lastMonth),
-    //     habit: { regularity: Like(Regularity.weekly) }, // TODO
-    //   },
-    //   relations: ['habit'],
-    // });
 
     // Workaround solution because the TypeORM where not working in relation
     const habitDones = await this.habitDoneRepository.find({

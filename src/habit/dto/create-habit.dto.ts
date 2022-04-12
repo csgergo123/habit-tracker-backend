@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty } from 'class-validator';
 import { Intensity } from '../entities/intensity.enum';
 import { Regularity } from '../entities/regularity.enum';
 
